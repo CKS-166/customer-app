@@ -10,13 +10,12 @@ pool: default
 
 
 steps:
-# - task: CmdLine@2
-#   inputs:
-#     script: |
-#       echo Write your commands here
-      
-#       echo Hello world
-#       mvn
+- script: 'wget http://www-eu.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.zip'
+
+- task: ExtractFiles@1
+  inputs:
+      archiveFilePatterns: 'apache-maven-3.5.4-bin.zip'
+      destinationFolder: '$(build.sourcesdirectory)/maven'
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
