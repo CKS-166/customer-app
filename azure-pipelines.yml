@@ -17,7 +17,7 @@ steps:
       
 #       echo Hello world
 #       mvn
-- task: Maven@4
+- task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
