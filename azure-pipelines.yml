@@ -36,7 +36,7 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: 'az-ServiceConnection'
     appType: 'webApp'
-    WebAppName: 'maven-web-cks'
+    WebAppName: 'maven-app-cks'
     packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.war'
-    VirtualApplication: 'maven-web-cks'
+    VirtualApplication: 'wwwroot/webapps'
     
