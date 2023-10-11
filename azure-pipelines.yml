@@ -30,12 +30,4 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
     
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'az-ServiceConnection'
-    appType: 'webApp'
-    WebAppName: 'maven-app-cks'
-    packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.war'
-    VirtualApplication: 'wwwroot/webapps'
     
