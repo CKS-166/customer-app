@@ -9,7 +9,7 @@ trigger:
 
 variables:
 - name: Build.Environment
-  value: $[ if(contains(variables['Build.SourceBranch'], 'refs/heads/dev'), 'dev', 'prod')) ]
+  value: ${{ if eq(variables['Build.SourceBranch'], 'dev') }} 'dev' ${{ else }} 'prod'
 
 pool: default
 
