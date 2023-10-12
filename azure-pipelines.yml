@@ -36,8 +36,8 @@ stages:
               ArtifactName: 'drop'
               publishLocation: 'Container'
   - stage: deploy_artifact
-    condition: succeeded('build artifact')
-    dependsOn: build artifact
+    condition: succeeded('build_artifact')
+    dependsOn: build_artifact
     jobs:
     - deployment: VMDeploy
       displayName: Deploy to VM
