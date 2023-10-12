@@ -50,7 +50,7 @@ stages:
             deploy:   
               steps:
                 - task: CopyFilesOverSSH@0
-                  displayName: 'Securely copy files to the remote machine'
+                  displayName: 'Securely copy files to the remote machine $(Build.ArtifactStagingDirectory)'
                   inputs:
                     sshEndpoint: 'ssh-connection-dev'
                     sourceFolder: '$(Build.ArtifactStagingDirectory)'
