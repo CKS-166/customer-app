@@ -51,9 +51,11 @@ stages:
                  
               steps:
                 - task: CopyFilesOverSSH@0
-                  displayName: 'Securely copy files to the remote machine $(Agent.BuildDirectory)'
+                  displayName: 'Securely copy files to the remote machine'
                   inputs:
                     sshEndpoint: 'ssh-connection-dev'
-                    sourceFolder: '$(Build.ArtifactStagingDirectory)/drop/target'
+                    # $(Build.ArtifactStagingDirectory) -> /home/terraform_vm/azagent/_work/1/a
+                    # $(Agent.BuildDirectory) -> /home/terraform_vm/azagent/_work/1/
+                    sourceFolder: '$(Agent.BuildDirectory)/drop/target'
                     contents: '**'
                     targetFolder: /opt/tomcat/webapps/
