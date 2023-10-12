@@ -9,7 +9,11 @@ trigger:
 
 variables:
 - name: Build.Environment
-  value: ${{ if eq(variables['Build.SourceBranch'], 'dev') }} 'dev' ${{ else }} 'prod'
+  value:
+    ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+      'prod'
+    ${{ else }}:
+      'dev'
 
 pool: default
 
