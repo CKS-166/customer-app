@@ -30,7 +30,7 @@ stages:
               Contents: '**/*.war'
               TargetFolder: '$(build.artifactstagingdirectory)'
           - task: PublishBuildArtifacts@1 
-            displayName: publish artirfact $(Build.ArtifactStagingDirectory)
+            displayName: publish artirfact
             inputs:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
