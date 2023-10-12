@@ -8,26 +8,37 @@ trigger: none
 
 pool: default
 
-
-steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
-- task: CopyFiles@2
-  inputs:
-    Contents: '**/*.war'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-    
+stages:
+  - stage: build artifact
+    jobs:
+      - job: build
+        steps:
+          - task: Maven@3
+            displayName: maven build
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.11'
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: true
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              goals: 'package'
+          - task: CopyFiles@2
+            displayName: copy built artifact
+            inputs:
+              Contents: '**/*.war'
+              TargetFolder: '$(build.artifactstagingdirectory)'
+          - task: PublishBuildArtifacts@1
+            displayName: publish artirfact
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+  # - stage: deploy artifact
+  #   condition: succeeded('build artifact')
+  #   dependsOn: build artifact
+  #   jobs:
+  #     - job: deploy
+        
     
