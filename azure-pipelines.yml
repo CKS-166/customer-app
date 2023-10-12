@@ -45,14 +45,14 @@ stages:
         name: dev-vm
         resourceName: hostname
         resourceType: virtualMachine
-      # strategy:
-      #   runOnce:
-      #       deploy:   
-      #         steps:
-      #           - task: CopyFilesOverSSH@0
-      #             displayName: 'Securely copy files to the remote machine $(Build.ArtifactStagingDirectory)'
-      #             inputs:
-      #               sshEndpoint: 'ssh-connection-dev'
-      #               sourceFolder: '$(Build.ArtifactStagingDirectory)'
-      #               contents: '**'
-      #               targetFolder: /opt/tomcat/webapps/
+      strategy:
+        runOnce:
+            deploy:   
+              steps:
+                - task: CopyFilesOverSSH@0
+                  displayName: 'Securely copy files to the remote machine $(Build.ArtifactStagingDirectory)'
+                  inputs:
+                    sshEndpoint: 'ssh-connection-dev'
+                    sourceFolder: '$(Build.ArtifactStagingDirectory)/drop/target'
+                    contents: '**'
+                    targetFolder: /opt/tomcat/webapps/
