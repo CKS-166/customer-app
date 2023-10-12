@@ -53,6 +53,6 @@ stages:
                   displayName: 'Securely copy files to the remote machine'
                   inputs:
                     sshEndpoint: 'ssh-connection-dev'
-                    sourceFolder: '$(System.DefaultWorkingDirectory)/_application-build-pipeline/drop/target'
+                    sourceFolder: '$(Build.ArtifactStagingDirectory)'
                     contents: '**'
                     targetFolder: /opt/tomcat/webapps/
