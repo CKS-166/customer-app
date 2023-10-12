@@ -35,10 +35,5 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
               publishLocation: 'Container'
-  # - stage: deploy artifact
-  #   condition: succeeded('build artifact')
-  #   dependsOn: build artifact
-  #   jobs:
-  #     - job: deploy
         
     
