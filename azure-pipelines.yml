@@ -9,7 +9,7 @@ trigger: none
 pool: default
 
 stages:
-  - stage: build artifact
+  - stage: build_artifact
     jobs:
       - job: build
         steps:
@@ -35,7 +35,7 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
               publishLocation: 'Container'
-  - stage: deploy artifact
+  - stage: deploy_artifact
     condition: succeeded('build artifact')
     dependsOn: build artifact
     jobs:
