@@ -47,10 +47,11 @@ stages:
         resourceType: virtualMachine
       strategy:
         runOnce:
-            deploy:   
+            deploy:
+                 
               steps:
                 - task: CopyFilesOverSSH@0
-                  displayName: 'Securely copy files to the remote machine $(System.ArtifactsDirectory)'
+                  displayName: 'Securely copy files to the remote machine $(Agent.BuildDirectory)'
                   inputs:
                     sshEndpoint: 'ssh-connection-dev'
                     sourceFolder: '$(Build.ArtifactStagingDirectory)/drop/target'
