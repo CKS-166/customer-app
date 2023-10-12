@@ -35,24 +35,24 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
               publishLocation: 'Container'
-  # - stage: deploy_artifact
-  #   condition: succeeded('build_artifact')
-  #   dependsOn: build_artifact
-  #   jobs:
-  #   - deployment: VMDeploy
-  #     displayName: Deploy to VM
-  #     environment: 
-  #       name: dev-vm
-  #       resourceName: hostname
-  #       resourceType: virtualMachine
-  #     strategy:
-  #       runOnce:
-  #           deploy:   
-  #             steps:
-  #               - task: CopyFilesOverSSH@0
-  #                 displayName: 'Securely copy files to the remote machine $(System.DefaultWorkingDirectory)'
-  #                 inputs:
-  #                   sshEndpoint: 'ssh-connection-dev'
-  #                   sourceFolder: '$(Build.ArtifactStagingDirectory)/drop/target'
-  #                   contents: '**'
-  #                   targetFolder: /opt/tomcat/webapps/
+  - stage: deploy_artifact
+    # condition: succeeded('build_artifact')
+    # dependsOn: build_artifact
+    jobs:
+    - deployment: VMDeploy
+      displayName: Deploy to VM
+      environment: 
+        name: dev-vm
+        resourceName: hostname
+        resourceType: virtualMachine
+      strategy:
+        runOnce:
+            deploy:   
+              steps:
+                - task: CopyFilesOverSSH@0
+                  displayName: 'Securely copy files to the remote machine'
+                  inputs:
+                    sshEndpoint: 'ssh-connection-dev'
+                    sourceFolder: '$(Build.ArtifactStagingDirectory)/drop/target'
+                    contents: '**'
+                    targetFolder: /opt/tomcat/webapps/
