@@ -8,10 +8,10 @@ trigger:
   - dev
 
 variables:
-  ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+  - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     - name: Build.Environment
       value: prod
-  ${{ else }}:
+  - ${{ else }}:
     - name: Build.Environment
       value: dev
 
