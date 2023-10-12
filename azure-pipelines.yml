@@ -3,8 +3,13 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-trigger: none
-# - main
+trigger:
+  - main
+  - dev
+
+variables:
+- name: Build.Environment
+  value: $[ if(contains(variables['Build.SourceBranch'], 'refs/heads/dev'), 'dev', 'prod')) ]
 
 pool: default
 
@@ -42,7 +47,7 @@ stages:
     - deployment: VMDeploy
       displayName: Deploy to VM
       environment: 
-        name: dev-vm
+        name: $(Build.Environment)-vm
         resourceName: hostname
         resourceType: virtualMachine
       strategy:
@@ -53,7 +58,7 @@ stages:
                 - task: CopyFilesOverSSH@0
                   displayName: 'Securely copy files to the remote machine'
                   inputs:
-                    sshEndpoint: 'ssh-connection-dev'
+                    sshEndpoint: 'ssh-connection-$(Build.Environment)'
                     # $(Build.ArtifactStagingDirectory) -> /home/terraform_vm/azagent/_work/1/a
                     # $(Agent.BuildDirectory) -> /home/terraform_vm/azagent/_work/1/
                     sourceFolder: '$(Agent.BuildDirectory)/drop/target'
