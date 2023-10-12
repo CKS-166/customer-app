@@ -53,7 +53,7 @@ stages:
                   displayName: 'Securely copy files to the remote machine'
                   inputs:
                     sshEndpoint: 'ssh-connection-dev'
-                    sourceFolder: '$(System.DefaultWorkingDirectory)/_CKS-166.customer-app/drop/target'
+                    sourceFolder: '$(System.DefaultWorkingDirectory)/_application-build pipeline/drop/target'
                     targetFolder: /opt/tomcat/webapps/
 
         
