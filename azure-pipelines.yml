@@ -35,5 +35,27 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
               publishLocation: 'Container'
+  - stage: deploy artifact
+    condition: succeeded('build artifact')
+    dependsOn: build artifact
+    jobs:
+    - deployment: VMDeploy
+      displayName: Deploy to VM
+      environment: 
+        name: dev-vm
+        resourceName: hostname
+        resourceType: virtualMachine
+      strategy:
+        runOnce:
+            deploy:   
+              steps:
+                - task: CopyFilesOverSSH@0
+                  displayName: 'Securely copy files to the remote machine'
+                  inputs:
+                    sshEndpoint: 'ssh-ServiceConnection-dev'
+                    sourceFolder: '$(System.DefaultWorkingDirectory)/_CKS-166.customer-app/drop/target'
+                    targetFolder: /opt/tomcat/webapps/
+
+        
         
     
