@@ -32,7 +32,7 @@ stages:
             displayName: maven build
             inputs:
               mavenPomFile: 'pom.xml'
-              mavenOptions: '-Xmx3072m -Dspring.profiles.active=prod'
+              mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '1.11'
               jdkArchitectureOption: 'x64'
