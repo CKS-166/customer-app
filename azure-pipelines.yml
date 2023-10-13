@@ -1,0 +1,76 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+  branches:
+    include:
+      - main
+      - dev
+  paths:
+    exclude:
+      - README.md
+      - azure-pipelines.yml
+
+variables:
+  - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    - name: Build.Environment
+      value: prod
+  - ${{ else }}:
+    - name: Build.Environment
+      value: dev
+
+pool: default
+
+stages:
+  - stage: build_artifact
+    jobs:
+      - job: build
+        steps:
+          - task: Maven@3
+            displayName: maven build
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.11'
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: true
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              goals: 'package'
+          - task: CopyFiles@2
+            displayName: copy built artifact
+            inputs:
+              Contents: '**/*.war'
+              TargetFolder: '$(build.artifactstagingdirectory)'
+          - task: PublishBuildArtifacts@1 
+            displayName: publish artirfact
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+  - stage: deploy_artifact
+    condition: succeeded('build_artifact')
+    dependsOn: build_artifact
+    jobs:
+    - deployment: VMDeploy
+      displayName: Deploy to VM
+      environment: 
+        name: $(Build.Environment)-vm
+        resourceName: hostname
+        resourceType: virtualMachine
+      strategy:
+        runOnce:
+            deploy:
+                 
+              steps:
+                - task: CopyFilesOverSSH@0
+                  displayName: 'Securely copy files to the remote machine'
+                  inputs:
+                    sshEndpoint: 'ssh-connection-$(Build.Environment)'
+                    # $(Build.ArtifactStagingDirectory) -> /home/terraform_vm/azagent/_work/1/a
+                    # $(Agent.BuildDirectory) -> /home/terraform_vm/azagent/_work/1/
+                    sourceFolder: '$(Agent.BuildDirectory)/drop/target'
+                    contents: '**'
+                    targetFolder: /opt/tomcat/webapps/
