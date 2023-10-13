@@ -27,12 +27,12 @@ stages:
   - stage: build_artifact
     jobs:
       - job: build
-        steps:
+        steps: 
           - task: Maven@3
             displayName: maven build
             inputs:
               mavenPomFile: 'pom.xml'
-              mavenOptions: '-Xmx3072m'
+              mavenOptions: '-Xmx3072m -Dspring.profiles.active=prod'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '1.11'
               jdkArchitectureOption: 'x64'
